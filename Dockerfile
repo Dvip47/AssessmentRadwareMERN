@@ -1,14 +1,19 @@
-# Dockerfile
-FROM node:14
+FROM node:16
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ./backend ./backend
+COPY ./frontend ./frontend
 
+WORKDIR /app/frontend
 RUN npm install
 
-COPY . .
+WORKDIR /app/backend
+RUN npm install
+
+WORKDIR /app
 
 EXPOSE 3000
+EXPOSE 8080
 
-CMD ['npm', 'start']
+CMD ["sh", "-c", "cd backend && node server.js & cd ./frontend && npm start"]
